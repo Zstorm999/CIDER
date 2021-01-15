@@ -65,10 +65,6 @@ func createFilesList(path string) *widget.List {
 		return nil
 	}
 
-	for i, f := range files {
-		fmt.Println(i, ":", f.Name(), "is a folder :", f.IsDir())
-	}
-
 	list := widget.NewList(
 		func() int { return len(files) }, //returns the length of the list
 		func() fyne.CanvasObject { //returns a template element, use as default
