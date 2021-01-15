@@ -29,6 +29,7 @@ func getDirectoryContent(path string) ([]os.FileInfo, error) {
 		return nil, errors.New("Specified path is not a directory: how could that ever happen ?")
 	}
 
+	//putting all files in the directory in a slice
 	files, err := currentDir.Readdir(0)
 
 	if err != nil {
