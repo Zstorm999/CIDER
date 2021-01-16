@@ -6,11 +6,10 @@ import (
 
 	"fyne.io/fyne"
 	"fyne.io/fyne/layout"
-	"fyne.io/fyne/widget"
 )
 
 //New : returns a fyne.Container containing a working file explorer
-func New() *fyne.Container {
+func New(win fyne.Window) *fyne.Container {
 
 	path, err := os.Getwd()
 
@@ -19,11 +18,11 @@ func New() *fyne.Container {
 		path = ""
 	}
 
-	lbcurrentFolder := widget.NewLabel(path)
+	lbcurrentFolder := createFolderWidget(path, win)
 
 	treeFiles := createFilesList(path)
 
-	container := fyne.NewContainerWithLayout(layout.NewGridLayout(1),
+	container := fyne.NewContainerWithLayout(layout.NewVBoxLayout(),
 		lbcurrentFolder, treeFiles)
 
 	return container

@@ -11,7 +11,7 @@ func main() {
 	myApp := app.New()
 	myWindow := myApp.NewWindow("CIDER")
 
-	explorer := explorer.New()
+	explorer := explorer.New(myWindow)
 
 	myWindow.SetContent(explorer)
 	myWindow.Resize(fyne.NewSize(800, 600))
