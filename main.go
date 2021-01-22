@@ -6,6 +6,7 @@ import (
 	"fyne.io/fyne/layout"
 	"fyne.io/fyne/widget"
 	"github.com/Zstorm999/cider/explorer"
+	"github.com/Zstorm999/cider/menu"
 )
 
 func main() {
@@ -16,9 +17,13 @@ func main() {
 	explorer := explorer.New(myWindow)
 	lbHello := widget.NewLabel("Hello World")
 
-	windowContent := fyne.NewContainerWithLayout(layout.NewHBoxLayout(), explorer, lbHello)
+	mainFrame := fyne.NewContainerWithLayout(layout.NewGridLayout(2), explorer, lbHello)
 
-	myWindow.SetContent(windowContent)
+	myWindow.SetContent(mainFrame)
+
+	menubar := menu.NewMenuBar()
+	myWindow.SetMainMenu(menubar)
+
 	myWindow.Resize(fyne.NewSize(800, 600))
 	myWindow.ShowAndRun()
 }
