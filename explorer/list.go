@@ -2,14 +2,7 @@ package explorer
 
 import (
 	"errors"
-	"fmt"
 	"os"
-
-	"fyne.io/fyne/layout"
-	"fyne.io/fyne/theme"
-
-	"fyne.io/fyne"
-	"fyne.io/fyne/widget"
 )
 
 func getDirectoryContent(path string) ([]os.FileInfo, error) {
@@ -55,7 +48,7 @@ func sortFileList(list []os.FileInfo) []os.FileInfo {
 
 }
 
-func createFilesList(path string) *fyne.Container {
+/*func createFilesList(path string) *fyne.Container {
 
 	files, err := getDirectoryContent(path)
 
@@ -85,4 +78,4 @@ func createFilesList(path string) *fyne.Container {
 
 	return fyne.NewContainerWithLayout(layout.NewGridLayout(1), list)
 
-}
+}*/

@@ -66,27 +66,21 @@ func createFilesTree(path string) *widget.Tree {
 			return fyne.NewContainerWithLayout(layout.NewHBoxLayout(), widget.NewIcon(nil), widget.NewLabel(""))
 		},
 		func(uid string, branch bool, node fyne.CanvasObject) { //update the template object to create what will be displayed
-			if uid == path {
+
+			sliced := strings.Split(uid, "/")
+			n := len(sliced)
+
+			_, isFolder := files[uid]
+
+			if isFolder {
 				node.(*fyne.Container).Objects[0].(*widget.Icon).SetResource(theme.FolderIcon())
-				node.(*fyne.Container).Objects[1].(*widget.Label).SetText(uid)
 			} else {
-				sliced := strings.Split(uid, "/")
-				n := len(sliced)
-
-				_, isFolder := files[uid]
-
-				if isFolder {
-					node.(*fyne.Container).Objects[0].(*widget.Icon).SetResource(theme.FolderIcon())
-				} else {
-					node.(*fyne.Container).Objects[0].(*widget.Icon).SetResource(theme.DocumentIcon())
-				}
-
-				node.(*fyne.Container).Objects[1].(*widget.Label).SetText(sliced[n-1])
+				node.(*fyne.Container).Objects[0].(*widget.Icon).SetResource(theme.DocumentIcon())
 			}
+
+			node.(*fyne.Container).Objects[1].(*widget.Label).SetText(sliced[n-1])
 		})
 
 	return tree
-
-	//return createFilesList(path)
 
 }
