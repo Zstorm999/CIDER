@@ -21,7 +21,7 @@ type Explorer struct {
 	Container *fyne.Container
 }
 
-func (e *Explorer) updateTree(newPath string) {
+func (e *Explorer) UpdateTree(newPath string) {
 	if newPath != e.path {
 		e.path = newPath
 
@@ -58,7 +58,7 @@ func New(win fyne.Window) *Explorer {
 
 	selectWindow := dialog.NewFolderOpen(
 		func(file fyne.ListableURI, err error) {
-			e.updateTree(file.String())
+			e.UpdateTree(file.String())
 		}, win)
 
 	e.folderSelect = widget.NewButtonWithIcon("", theme.FolderIcon(),

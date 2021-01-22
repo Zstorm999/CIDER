@@ -21,7 +21,7 @@ func main() {
 
 	myWindow.SetContent(mainFrame)
 
-	menubar := menu.NewMenuBar()
+	menubar := menu.NewMenuBar(myWindow, explorer)
 	myWindow.SetMainMenu(menubar)
 
 	myWindow.Resize(fyne.NewSize(800, 600))
