@@ -55,7 +55,7 @@ func sortFileList(list []os.FileInfo) []os.FileInfo {
 
 }
 
-func createFilesList(path string) *widget.List {
+func createFilesList(path string) *fyne.Container {
 
 	files, err := getDirectoryContent(path)
 
@@ -83,6 +83,6 @@ func createFilesList(path string) *widget.List {
 		},
 	)
 
-	return list
+	return fyne.NewContainerWithLayout(layout.NewGridLayout(1), list)
 
 }
