@@ -12,7 +12,9 @@ func createFileMenu(win fyne.Window, e *explorer.Explorer) (menu *fyne.Menu) {
 		func() {
 			selectWindow := dialog.NewFolderOpen(
 				func(file fyne.ListableURI, err error) {
-					e.UpdateTree(file.String())
+					if file != nil {
+						e.UpdateTree(file.String())
+					}
 				}, win)
 
 			selectWindow.Show()

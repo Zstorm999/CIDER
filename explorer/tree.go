@@ -23,12 +23,17 @@ func extendFilesMap(path string, files *map[string][]string) {
 	for i := range filesRaw {
 
 		if filesRaw[i].Name() != ".git" {
-
-			(*files)[path] = append((*files)[path], path+"/"+filesRaw[i].Name())
+			var file string
 
 			if filesRaw[i].IsDir() {
 				extendFilesMap(path+"/"+filesRaw[i].Name(), files)
+
+				file = "dir:" + path + "/" + filesRaw[i].Name()
+			} else {
+				file = "doc:" + path + "/" + filesRaw[i].Name()
 			}
+
+			(*files)["dir:"+path] = append((*files)["dir:"+path], file)
 		}
 
 	}
@@ -41,7 +46,7 @@ func createFilesMap(path string) (files map[string][]string) {
 	extendFilesMap(path, &files)
 
 	//placing the root
-	files[""] = append(files[""], path)
+	files[""] = append(files[""], "dir:"+path)
 
 	return
 
@@ -58,9 +63,13 @@ func createFilesTree(path string) *widget.Tree {
 			}
 			return
 		},
-		func(uid string) bool { //returns true if the node is a leaf
-			_, exist := files[uid]
-			return exist
+		func(uid string) bool { //returns false if the node is a leaf
+
+			if uid == "" {
+				return true
+			}
+
+			return strings.HasPrefix(uid, "dir:")
 		},
 		func(branch bool) fyne.CanvasObject { //creates a template object
 			return fyne.NewContainerWithLayout(layout.NewHBoxLayout(), widget.NewIcon(nil), widget.NewLabel(""))
@@ -70,9 +79,7 @@ func createFilesTree(path string) *widget.Tree {
 			sliced := strings.Split(uid, "/")
 			n := len(sliced)
 
-			_, isFolder := files[uid]
-
-			if isFolder {
+			if strings.HasPrefix(uid, "dir:") {
 				node.(*fyne.Container).Objects[0].(*widget.Icon).SetResource(theme.FolderIcon())
 			} else {
 				node.(*fyne.Container).Objects[0].(*widget.Icon).SetResource(theme.DocumentIcon())
