@@ -7,11 +7,14 @@ import (
 	"github.com/Zstorm999/cider/editor"
 	"github.com/Zstorm999/cider/explorer"
 	"github.com/Zstorm999/cider/menu"
+	"github.com/Zstorm999/cider/resources"
 )
 
 func main() {
 
 	myApp := app.New()
+	myApp.SetIcon(resources.CiderIcon())
+
 	myWindow := myApp.NewWindow("CIDER")
 
 	explorer := explorer.New(myWindow)
