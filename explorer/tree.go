@@ -10,7 +10,7 @@ import (
 	"fyne.io/fyne/widget"
 )
 
-func extendFilesMap(path string, files *map[string][]string) {
+func extendFilesMap(path string, files *map[string][]string, completion *widget.ProgressBar, level float64) int {
 
 	filesRaw, err := getDirectoryContent(path)
 
@@ -20,30 +20,47 @@ func extendFilesMap(path string, files *map[string][]string) {
 
 	filesRaw = sortFileList(filesRaw)
 
+	nbFiles := len(filesRaw)
+
+	nextLevel := level / float64(nbFiles)
+
 	for i := range filesRaw {
 
 		if filesRaw[i].Name() != ".git" {
 			var file string
 
 			if filesRaw[i].IsDir() {
-				extendFilesMap(path+"/"+filesRaw[i].Name(), files)
+				nbNext := extendFilesMap(path+"/"+filesRaw[i].Name(), files, completion, nextLevel)
 
 				file = "dir:" + path + "/" + filesRaw[i].Name()
+
+				if nbNext != 0 {
+					completion.SetValue(completion.Value + nextLevel)
+				}
+
 			} else {
 				file = "doc:" + path + "/" + filesRaw[i].Name()
+
+				completion.SetValue(completion.Value + nextLevel)
 			}
 
 			(*files)["dir:"+path] = append((*files)["dir:"+path], file)
+
 		}
 
 	}
 
+	return nbFiles
+
 }
 
-func createFilesMap(path string) (files map[string][]string) {
+func createFilesMap(path string, completion *widget.ProgressBar) (files map[string][]string) {
 
 	files = make(map[string][]string)
-	extendFilesMap(path, &files)
+
+	completion.SetValue(0)
+
+	extendFilesMap(path, &files, completion, 1)
 
 	//placing the root
 	files[""] = append(files[""], "dir:"+path)
@@ -52,9 +69,9 @@ func createFilesMap(path string) (files map[string][]string) {
 
 }
 
-func createFilesTree(path string) *widget.Tree {
+func createFilesTree(path string, completion *widget.ProgressBar) *widget.Tree {
 
-	files := createFilesMap(path)
+	files := createFilesMap(path, completion)
 
 	tree := widget.NewTree(
 		func(uid string) (children []string) { //gets all children from a node, using its UID
@@ -76,16 +93,13 @@ func createFilesTree(path string) *widget.Tree {
 		},
 		func(uid string, branch bool, node fyne.CanvasObject) { //update the template object to create what will be displayed
 
-			sliced := strings.Split(uid, "/")
-			n := len(sliced)
-
 			if strings.HasPrefix(uid, "dir:") {
 				node.(*fyne.Container).Objects[0].(*widget.Icon).SetResource(theme.FolderIcon())
 			} else {
 				node.(*fyne.Container).Objects[0].(*widget.Icon).SetResource(theme.DocumentIcon())
 			}
 
-			node.(*fyne.Container).Objects[1].(*widget.Label).SetText(sliced[n-1])
+			node.(*fyne.Container).Objects[1].(*widget.Label).SetText(parseFileName(uid))
 		})
 
 	return tree

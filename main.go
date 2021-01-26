@@ -4,7 +4,7 @@ import (
 	"fyne.io/fyne"
 	"fyne.io/fyne/app"
 	"fyne.io/fyne/container"
-	"fyne.io/fyne/widget"
+	"github.com/Zstorm999/cider/editor"
 	"github.com/Zstorm999/cider/explorer"
 	"github.com/Zstorm999/cider/menu"
 )
@@ -15,9 +15,9 @@ func main() {
 	myWindow := myApp.NewWindow("CIDER")
 
 	explorer := explorer.New(myWindow)
-	lbHello := widget.NewLabel("Hello World")
+	editor := editor.New()
 
-	mainFrame := container.NewHSplit(explorer.Container, lbHello)
+	mainFrame := container.NewHSplit(explorer.Container, editor)
 
 	myWindow.SetContent(mainFrame)
 

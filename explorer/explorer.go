@@ -18,20 +18,28 @@ type Explorer struct {
 	folderName   *widget.Label
 	folderSelect *widget.Button
 
+	completion *widget.ProgressBar
+
 	Container *fyne.Container
 }
 
 func (e *Explorer) UpdateTree(newPath string) {
 
 	if newPath != e.path {
+
+		e.completion.Show()
+
 		e.path = newPath
 
 		trimmedPath := strings.TrimPrefix(newPath, "file://")
-		e.Container.Objects[0] = createFilesTree(trimmedPath)
 
-		sliced := strings.Split(newPath, "/")
-		n := len(sliced)
-		e.folderName.SetText(sliced[n-1])
+		e.Container.Objects[0] = createFilesTree(trimmedPath, e.completion)
+
+		e.completion.SetValue(1)
+
+		e.folderName.SetText(parseFileName(newPath))
+
+		e.completion.Hide()
 
 	}
 
@@ -51,11 +59,12 @@ func New(win fyne.Window) *Explorer {
 	e := &Explorer{}
 
 	e.path = path
-	treeFiles := createFilesTree(path)
+	e.completion = widget.NewProgressBar()
+	e.completion.Hide()
 
-	sliced := strings.Split(path, "/")
-	n := len(sliced)
-	e.folderName = widget.NewLabel(sliced[n-1])
+	treeFiles := createFilesTree(path, e.completion)
+
+	e.folderName = widget.NewLabel(parseFileName(path))
 
 	selectWindow := dialog.NewFolderOpen(
 		func(file fyne.ListableURI, err error) {
@@ -71,7 +80,7 @@ func New(win fyne.Window) *Explorer {
 
 	topBar := container.NewBorder(nil, nil, e.folderName, e.folderSelect)
 
-	e.Container = container.NewBorder(topBar, nil, nil, nil, treeFiles)
+	e.Container = container.NewBorder(topBar, e.completion, nil, nil, treeFiles)
 
 	return e
 
