@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"strings"
 
-	"fyne.io/fyne"
-	"fyne.io/fyne/layout"
-	"fyne.io/fyne/theme"
-	"fyne.io/fyne/widget"
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/layout"
+	"fyne.io/fyne/v2/theme"
+	"fyne.io/fyne/v2/widget"
 )
 
 func extendFilesMap(path string, files *map[string][]string, completion *widget.ProgressBar, level float64) int {

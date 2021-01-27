@@ -3,7 +3,7 @@ package resources
 import (
 	"fmt"
 
-	"fyne.io/fyne"
+	"fyne.io/fyne/v2"
 )
 
 func CiderIcon() fyne.Resource {

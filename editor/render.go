@@ -3,7 +3,7 @@ package editor
 import (
 	"image/color"
 
-	"fyne.io/fyne"
+	"fyne.io/fyne/v2"
 )
 
 var (
