@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"sync"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
@@ -21,9 +22,14 @@ type Explorer struct {
 	completion *widget.ProgressBar
 
 	Container *fyne.Container
+
+	lock sync.Mutex
 }
 
 func (e *Explorer) UpdateTree(newPath string) {
+
+	e.lock.Lock()
+	defer e.lock.Unlock()
 
 	if newPath != e.path {
 
@@ -40,7 +46,6 @@ func (e *Explorer) UpdateTree(newPath string) {
 		e.folderName.SetText(ParseFileName(newPath))
 
 		e.completion.Hide()
-
 	}
 
 }
