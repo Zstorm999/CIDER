@@ -18,13 +18,15 @@ func main() {
 	myWindow := myApp.NewWindow("CIDER")
 
 	explorer := explorer.New(myWindow)
+
 	editor := editor.New()
 
-	mainFrame := container.NewHSplit(explorer.Container, editor)
+	mainFrame := container.NewHSplit(explorer.Container, editor.Container)
+	mainFrame.SetOffset(0.2)
 
 	myWindow.SetContent(mainFrame)
 
-	menubar := menu.NewMenuBar(myWindow, explorer)
+	menubar := menu.NewMenuBar(myWindow, explorer, editor)
 	myWindow.SetMainMenu(menubar)
 
 	myWindow.Resize(fyne.NewSize(800, 600))

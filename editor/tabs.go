@@ -1,17 +1,29 @@
 package editor
 
 import (
-	"fyne.io/fyne/container"
 	"fyne.io/fyne/widget"
+	"github.com/Zstorm999/cider/explorer"
 )
 
-func New() *widget.TabContainer {
+type Editor struct {
+	Container *widget.TabContainer
+}
 
-	textEditor1 := newEditorTab()
-	textEditor2 := newEditorTab()
+func New() *Editor {
 
-	return container.NewAppTabs(
-		container.NewTabItem("Tab1", textEditor1),
-		container.NewTabItem("Tab2", textEditor2))
+	e := &Editor{}
+
+	e.Container = widget.NewTabContainer()
+
+	return e
+
+}
+
+func (e *Editor) AddTab(file string) {
+
+	newTab := widget.NewTabItem(explorer.ParseFileName(file), newEditorTab(file))
+
+	e.Container.Append(newTab)
+	e.Container.SelectTab(newTab)
 
 }

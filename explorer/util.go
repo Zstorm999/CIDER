@@ -2,6 +2,7 @@ package explorer
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"strings"
 )
@@ -49,7 +50,7 @@ func sortFileList(list []os.FileInfo) []os.FileInfo {
 
 }
 
-func parseFileName(file string) string {
+func ParseFileName(file string) string {
 	if file == "" {
 		return ""
 	}
@@ -62,4 +63,40 @@ func parseFileName(file string) string {
 	n := len(sliced)
 
 	return sliced[n-1]
+}
+
+func GetFileContent(filePath string) string {
+
+	file, err := os.Open(filePath)
+	defer file.Close()
+
+	if err != nil {
+		fmt.Println(err)
+		return ""
+	}
+
+	fileinfo, err := file.Stat()
+
+	if err != nil {
+		fmt.Println(err)
+		return ""
+	}
+
+	filesize := fileinfo.Size()
+
+	if filesize > 0x100000 { //no more than 1Mo
+		return "File too big to be displayed, more than 1MB"
+	}
+
+	buffer := make([]byte, int(filesize))
+
+	_, err = file.Read(buffer)
+
+	if err != nil {
+		fmt.Println(err)
+		return ""
+	}
+
+	return string(buffer)
+
 }

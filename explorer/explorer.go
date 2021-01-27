@@ -37,7 +37,7 @@ func (e *Explorer) UpdateTree(newPath string) {
 
 		e.completion.SetValue(1)
 
-		e.folderName.SetText(parseFileName(newPath))
+		e.folderName.SetText(ParseFileName(newPath))
 
 		e.completion.Hide()
 
@@ -64,7 +64,7 @@ func New(win fyne.Window) *Explorer {
 
 	treeFiles := createFilesTree(path, e.completion)
 
-	e.folderName = widget.NewLabel(parseFileName(path))
+	e.folderName = widget.NewLabel(ParseFileName(path))
 
 	selectWindow := dialog.NewFolderOpen(
 		func(file fyne.ListableURI, err error) {

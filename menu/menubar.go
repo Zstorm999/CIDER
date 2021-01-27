@@ -1,26 +1,41 @@
 package menu
 
 import (
+	"strings"
+
 	"fyne.io/fyne"
 	"fyne.io/fyne/dialog"
+	"github.com/Zstorm999/cider/editor"
 	"github.com/Zstorm999/cider/explorer"
 )
 
-func createFileMenu(win fyne.Window, e *explorer.Explorer) (menu *fyne.Menu) {
+func createFileMenu(win fyne.Window, explorer *explorer.Explorer, editor *editor.Editor) (menu *fyne.Menu) {
 
 	openfolder := fyne.NewMenuItem("Open Folder",
 		func() {
 			selectWindow := dialog.NewFolderOpen(
 				func(file fyne.ListableURI, err error) {
 					if file != nil {
-						e.UpdateTree(file.String())
+						explorer.UpdateTree(file.String())
 					}
 				}, win)
 
 			selectWindow.Show()
 		})
 
-	openfile := fyne.NewMenuItem("Open File", func() {})
+	openfile := fyne.NewMenuItem("Open File",
+		func() {
+			selectWindow := dialog.NewFileOpen(
+				func(file fyne.URIReadCloser, err error) {
+
+					if file != nil {
+						filepath := strings.TrimPrefix(file.URI().String(), "file://")
+						editor.AddTab(filepath)
+					}
+
+				}, win)
+			selectWindow.Show()
+		})
 
 	menu = fyne.NewMenu("File", openfile, openfolder)
 
@@ -37,9 +52,9 @@ func createEditMenu() (menu *fyne.Menu) {
 	return
 }
 
-func NewMenuBar(win fyne.Window, e *explorer.Explorer) (menubar *fyne.MainMenu) {
+func NewMenuBar(win fyne.Window, explorer *explorer.Explorer, editor *editor.Editor) (menubar *fyne.MainMenu) {
 
-	fileMenu := createFileMenu(win, e)
+	fileMenu := createFileMenu(win, explorer, editor)
 	editMenu := createEditMenu()
 
 	menubar = fyne.NewMainMenu(fileMenu, editMenu)

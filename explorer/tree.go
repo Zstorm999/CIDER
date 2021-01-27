@@ -99,7 +99,7 @@ func createFilesTree(path string, completion *widget.ProgressBar) *widget.Tree {
 				node.(*fyne.Container).Objects[0].(*widget.Icon).SetResource(theme.DocumentIcon())
 			}
 
-			node.(*fyne.Container).Objects[1].(*widget.Label).SetText(parseFileName(uid))
+			node.(*fyne.Container).Objects[1].(*widget.Label).SetText(ParseFileName(uid))
 		})
 
 	return tree
