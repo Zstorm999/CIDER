@@ -1,7 +1,7 @@
 package editor
 
 import (
-	"fyne.io/fyne/widget"
+	"fyne.io/fyne/v2/widget"
 	"github.com/Zstorm999/cider/explorer"
 )
 

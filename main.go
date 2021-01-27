@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fyne.io/fyne"
-	"fyne.io/fyne/app"
-	"fyne.io/fyne/container"
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/container"
 	"github.com/Zstorm999/cider/editor"
 	"github.com/Zstorm999/cider/explorer"
 	"github.com/Zstorm999/cider/menu"
