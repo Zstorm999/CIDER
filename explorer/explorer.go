@@ -74,7 +74,7 @@ func New(win fyne.Window) *Explorer {
 	selectWindow := dialog.NewFolderOpen(
 		func(file fyne.ListableURI, err error) {
 			if file != nil {
-				e.UpdateTree(file.String())
+				go e.UpdateTree(file.String())
 			}
 		}, win)
 

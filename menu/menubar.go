@@ -16,7 +16,7 @@ func createFileMenu(win fyne.Window, explorer *explorer.Explorer, editor *editor
 			selectWindow := dialog.NewFolderOpen(
 				func(file fyne.ListableURI, err error) {
 					if file != nil {
-						explorer.UpdateTree(file.String())
+						go explorer.UpdateTree(file.String())
 					}
 				}, win)
 
